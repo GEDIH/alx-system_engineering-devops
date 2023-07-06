@@ -1,24 +1,8 @@
-# Script to install nginx using puppet
+# Install Nginx web server (w/ Puppet)
+# Similar to task 4-not_found_page_404
+# install nginx and reset the default configurations
 
-package {'nginx':
-  ensure => 'present',
-}
-
-exec {'install':
-  command  => 'sudo apt-get update ; sudo apt-get -y install nginx',
+exec { 'server configuration':
   provider => shell,
-}
-
-exec {'Hello World!':
-  command  => 'echo "Hello World!" | sudo dd status=none of=/var/www/html/index.html',
-  provider => shell,
-}
-
-exec {'sudo sed -i "s/listen 80 default_server;/listen 80 default_server;\\n\\tlocation \/redirect_me {\\n\\t\\treturn 301 https:\/\/www.youtube.com\/;\\n\\t}/" /etc/nginx/sites-available/default':
-  provider => shell,
-}
-
-exec {'run':
-  command  => 'sudo service nginx restart',
-  provider => shell,
+  command  => 'sudo apt-get -y update; sudo apt-get -y install nginx; echo "Hello World!" > /var/www/html/index.html; sudo sed -i "/server_name _;/a location /redirect_me {\\n\\treturn 301 https://youtube.com;\\n\\t}\\n" /etc/nginx/sites-available/default; sudo service nginx restart',
 }
