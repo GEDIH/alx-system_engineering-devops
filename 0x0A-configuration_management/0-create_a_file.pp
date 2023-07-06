@@ -1,10 +1,8 @@
-# Creates a file in /tmp
+# creates a file in /tmp
 
-file { 'school':
-  ensure  => 'present',
-  content => 'I love Puppet',
-  group   => 'www-data',
+file { '/tmp/school':
+  content =>'I love Puppet',
   mode    => '0744',
   owner   => 'www-data',
-  path    => '/tmp/school',
+  group   => 'www-data',
 }
